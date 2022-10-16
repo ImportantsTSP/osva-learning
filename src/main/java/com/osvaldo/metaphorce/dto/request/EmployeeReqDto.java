@@ -1,5 +1,6 @@
 package com.osvaldo.metaphorce.dto.request;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.JoinColumn;
@@ -14,7 +15,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class EmployeeReqDto {
+public class EmployeeReqDto implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	
 
