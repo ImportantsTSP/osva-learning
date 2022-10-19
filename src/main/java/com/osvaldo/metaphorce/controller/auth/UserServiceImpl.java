@@ -1,7 +1,6 @@
 package com.osvaldo.metaphorce.controller.auth;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,23 +12,31 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Service(value = "userService")
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
 	
 	@Autowired
 	private UserRepository userDao;
 
 	@Autowired
-	private BCryptPasswordEncoder bcryptEncoder;
+	private  BCryptPasswordEncoder bcryptEncoder;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {//to any user and password 
-
-		return null;
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserEntity user = userDao.findByUsername(username);
+		if(user == null){
+			throw new UsernameNotFoundException("Invalid username or password.");
+		}
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority());
 	}
 	
-
+	private List<SimpleGrantedAuthority> getAuthority() {
+		return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+	}
 
 
     @Override
@@ -40,6 +47,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         return userDao.save(newUser);
     }
+    
+	@Override
+	public UserEntity findOne(String username) {
+		return userDao.findByUsername(username);
+	}
 
 
 }
