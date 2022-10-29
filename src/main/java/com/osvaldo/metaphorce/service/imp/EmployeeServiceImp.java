@@ -71,6 +71,9 @@ public class EmployeeServiceImp implements EmployeeService {
 	@Override
 	public EmployeeResponseDto getEmployees( Integer page, Integer size) {
 		Pageable pageable= PageRequest.of(page, size);
+		System.out.println(pageable.getPageSize());
+		System.out.println(pageable.getPageNumber());
+
 
 		try {
 			Page<Employee> pEmployees=employer.findByIsActive(true,pageable);
