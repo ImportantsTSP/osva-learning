@@ -18,7 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
-	/*
+	
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (
@@ -54,7 +54,7 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
- */   
+    
     
     /*
      * Method to generate token

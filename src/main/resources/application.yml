@@ -52,5 +52,23 @@ spring:
                 format_sql: true
                 
 #        show-sql: true
+
+
+---       
+# Local properties
+spring:
+    profiles: docker
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3308/methaphorce?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&serverTimezone=UTC
+        username: root
+        password: methaphorce
+    jpa:
+        hibernate:
+            ddl-auto: update    
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL57Dialect
+                format_sql: true
         
 
