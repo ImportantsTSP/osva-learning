@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.osvaldo.metaphorce.dto.request.EmployeeReqDto;
@@ -36,11 +37,11 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/employees")
-	public ResponseEntity<EmployeeResponseDto> getEmployees() {
+	public ResponseEntity<EmployeeResponseDto> getEmployees(@RequestParam Integer page,@RequestParam Integer size) {
 
-		employeeService.getEmployees();
+		
 
-		return new ResponseEntity<>(employeeService.getEmployees(), HttpStatus.OK);
+		return new ResponseEntity<>(employeeService.getEmployees(page,size), HttpStatus.OK);
 	}
 
 }

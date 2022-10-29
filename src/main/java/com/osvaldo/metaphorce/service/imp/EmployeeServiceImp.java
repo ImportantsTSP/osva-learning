@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.osvaldo.metaphorce.dto.request.EmployeeReqDto;
@@ -12,6 +15,7 @@ import com.osvaldo.metaphorce.dto.response.ContractDto;
 import com.osvaldo.metaphorce.dto.response.EmployeeDataDto;
 import com.osvaldo.metaphorce.dto.response.EmployeeDto;
 import com.osvaldo.metaphorce.dto.response.EmployeeResponseDto;
+import com.osvaldo.metaphorce.dto.response.PageDto;
 import com.osvaldo.metaphorce.dto.response.ResultDto;
 import com.osvaldo.metaphorce.entity.Employee;
 import com.osvaldo.metaphorce.repository.EmployeeRepository;
@@ -65,10 +69,13 @@ public class EmployeeServiceImp implements EmployeeService {
 	}
 
 	@Override
-	public EmployeeResponseDto getEmployees() {
+	public EmployeeResponseDto getEmployees( Integer page, Integer size) {
+		Pageable pageable= PageRequest.of(page, size);
 
 		try {
-			List<EmployeeDto> lEmp = employer.findByIsActive(true).stream().map(employee -> {
+			Page<Employee> pEmployees=employer.findByIsActive(true,pageable);
+			
+			List<EmployeeDto> lEmp = pEmployees.getContent().stream().map(employee -> {
 
 				EmployeeDto employeeDto = EmployeeDto.builder().build();
 				BeanUtils.copyProperties(employee, employeeDto);
@@ -94,11 +101,14 @@ public class EmployeeServiceImp implements EmployeeService {
 				return employeeDto;
 			}).collect(Collectors.toList());
 			
-			
+			PageDto pageS=PageDto.builder()
+					.size(pEmployees.getSize())
+					.totalElements(pEmployees.getTotalElements()).
+					totalPages(pEmployees.getTotalPages()).number(pEmployees.getNumber()).build();
 
 			return EmployeeResponseDto.builder()
 					.result(ResultDto.builder().statusCode(200).info("Ok").message("List Employees").build())
-					.data(EmployeeDataDto.builder().employees(lEmp).build())
+					.data(EmployeeDataDto.builder().employees(lEmp).pageDto(pageS).build())
 					.build();
 
 		} catch (Exception e) {

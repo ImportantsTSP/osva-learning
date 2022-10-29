@@ -16,5 +16,6 @@ public class EmployeeDataDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<EmployeeDto> employees;
+	private PageDto pageDto;
 
 }
