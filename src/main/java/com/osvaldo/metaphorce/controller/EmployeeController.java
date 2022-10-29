@@ -39,7 +39,6 @@ public class EmployeeController {
 	@GetMapping("/employees")
 	public ResponseEntity<EmployeeResponseDto> getEmployees(@RequestParam Integer page,@RequestParam Integer size) {
 
-		
 
 		return new ResponseEntity<>(employeeService.getEmployees(page,size), HttpStatus.OK);
 	}
